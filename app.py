@@ -49,6 +49,7 @@ def load_tickers():
 
 # 사이드바 - 사용자 입력
 st.sidebar.header("주식 정보")
+st.sidebar.header("대시보드코드 업데이트!!!!")
 tickers = load_tickers()
 selected_company = st.sidebar.selectbox(
     "기업 선택",
