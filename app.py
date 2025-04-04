@@ -11,12 +11,19 @@ import os
 
 # 폰트 파일 경로 설정
 font_path = os.path.join('nanum-gothic', 'NanumGothic.ttf')
+
+# streamlit 리눅스 가상환경 따름
+# 기본값으로 한글폰트 없음
+# 별도 설치 필요, apt-get install 사용할 수 없음
+# 명시적으로 해당폰트 위치 지정 필요
 font_prop = fm.FontProperties(fname=font_path)
 
 # 운영체제에 따른 한글 폰트 설정
+# Local Test 할 때는 Windows
+# 배포할 때는 streamlit 내부 리눅스 가상환경으로 배포가 됨
 if platform.system() == 'Windows':
     plt.rcParams['font.family'] = 'Malgun Gothic'
-else:  # Linux or other systems
+else: # Linux or other systems
     # 폰트 매니저에 폰트 추가
     fm.fontManager.addfont(font_path)
     plt.rcParams['font.family'] = font_prop.get_name()
@@ -71,7 +78,8 @@ def load_data(ticker, start_date, end_date):
 
 try:
     df = load_data(ticker, start_date, end_date)
-    
+    st.write(df)
+
     # 기본 주식 정보 표시
     st.subheader(f"{selected_company} ({ticker}) 주식 정보")
     col1, col2, col3 = st.columns(3)
@@ -127,6 +135,7 @@ try:
     
     with col1:
         # 이동평균선
+        # pandas 메서드 중에서 시계열 처리 관련 메서드가 존재
         df['MA20'] = df['Close'].rolling(window=20).mean()
         df['MA50'] = df['Close'].rolling(window=50).mean()
         
